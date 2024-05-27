@@ -8,6 +8,8 @@
 \usepackage{helvet}
 \usepackage{tikz}
 \usepackage{lipsum}
+\usepackage{pgf}
+\usepackage[english]{babel}
 %\vspace{20cm}
 \usetheme{Hannover}
 %\usecolortheme{rose}
@@ -20,7 +22,7 @@
 \institute{\large ZJU-UIUC Institute}
 
 \date{Spring Semester 2024}
-
+\selectlanguage{english}
 \begin{document}
 % Title page
 \begin{frame}
@@ -31,17 +33,53 @@
 \end{tikzpicture}
 \end{frame}
 
-\section{Outline}
-\begin{frame}
-\frametitle{Outline}
-\tableofcontents 
-\end{frame}
+% \section{Outline}
+% \begin{frame}
+% \frametitle{Outline}
+% \tableofcontents 
+% \end{frame}
 
 \begin{frame}
 \frametitle{Euler's Method}
-\begin{block}{Block 1}
-This is a simple block in beamer.
-\end{block}
+%insert euler1.pgf
+	\begin{figure}
+		\centering
+		\scalebox{0.3}{\input{euler1.pgf}}
+		\scalebox{0.3}{\input{euler2.pgf}}
+		\caption{Euler's Method for IVP1(left), IVP2(right)}
+	\end{figure}
 \end{frame}	
 
+\begin{frame}
+	\frametitle{Improved Euler's Method}
+	%insert euler1.pgf
+	\begin{figure}
+		\centering
+		\scalebox{0.3}{\input{impeuler1.pgf}}
+		\scalebox{0.3}{\input{impeuler2.pgf}}
+		\caption{Improved Euler's Method for IVP1(left), IVP2(right)}
+	\end{figure}
+\end{frame}	
+
+\begin{frame}
+	\frametitle{Runge-Kutta Method}
+	%insert euler1.pgf
+	\begin{figure}
+		\centering
+		\scalebox{0.3}{\input{runge1.pgf}}
+		\scalebox{0.3}{\input{runge2.pgf}}
+		\caption{Runge-Kutta Method for IVP1(left), IVP2(right)}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Adams-Bashforth Method}
+	%insert euler1.pgf
+	\begin{figure}
+		\centering
+		\scalebox{0.3}{\input{abm1.pgf}}
+		\scalebox{0.3}{\input{abm2.pgf}}
+		\caption{Adams-Bashforth Method for IVP1(left), IVP2(right)}
+	\end{figure}
+\end{frame}	
 \end{document}
