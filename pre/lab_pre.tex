@@ -39,18 +39,8 @@
 % \tableofcontents 
 % \end{frame}
 
-\begin{frame}[allowframebreaks]
+\begin{frame}
 \frametitle{Euler's Method}
-%insert euler1.pgf
-The Euler's method is based on the simple idea of approximating the solution of the ODE by the tangent line to the solution at the current point.
-\begin{block}{Algorithm}
-define IVP $f(t,y)$: $t = t_0$ and $y = y_0$ \\
-input step size $h$ \\number of steps $n$ \\
-for j from $1$ to $n$ do\\
-$f_n=f(t,y)$\\
-$y = y + h \cdot f_n$\\ $
-t=t+h$
-\end{block}
 	\begin{figure}
 		\centering
 		\scalebox{0.45}{\input{euler.pgf}}
@@ -58,17 +48,8 @@ t=t+h$
 	\end{figure}
 \end{frame}	
 
-\begin{frame}[allowframebreaks]
+\begin{frame}
 	\frametitle{Improved Euler's Method}
-The Improved Euler's method is based on the idea of using the average of the slopes at the beginning and the end of the interval to approximate the solution.
-\begin{block}{Algorithm}
-define IVP $f(t,y)$: $t = t_0$ and $y = y_0$ \\
-input step size $h$ \\number of steps $n$ \\
-for j from $1$ to $n$ do\\
-$y = y + h \cdot \frac{f(t_n,y_n)+f(t_{n+1},y_{n+1})}{2}$\\ $
-t=t+h$
-\end{block}
-	%insert euler1.pgf
 	\begin{figure}
 		\centering
 		\scalebox{0.45}{\input{impeuler.pgf}}
@@ -76,18 +57,8 @@ t=t+h$
 	\end{figure}
 \end{frame}	
 
-\begin{frame}[allowframebreaks]
+\begin{frame}
 	\frametitle{Runge-Kutta Method}
-	%insert euler1.pgf
-The Runge-Kutta method(a.k.a fourth-order four-stage Runge-Kutta method) is based on the idea of using the weighted average of the slopes at different points in the interval to approximate the solution.
-\begin{block}{Algorithm}
-define IVP $f(t,y)$: $t = t_0$ and $y = y_0$ \\
-input step size $h$ \\number of steps $n$ \\
-for j from $1$ to $n$ do\\
-$y = y + h \cdot \frac{k_1+2k_2+2k_3+k_4}{6}$\\ $
-t=t+h$\\
-where $k_1=f(t_n,y_n), k_2=f(t_n+h/2,y_n+hk_1/2), k_3=f(t_n+h/2,y_n+hk_2/2), k_4=f(t_n+h/2,y_n+hk_3/2)$
-\end{block}
 	\begin{figure}
 		\centering
 		\scalebox{0.45}{\input{runge.pgf}}
@@ -95,21 +66,28 @@ where $k_1=f(t_n,y_n), k_2=f(t_n+h/2,y_n+hk_1/2), k_3=f(t_n+h/2,y_n+hk_2/2), k_4
 	\end{figure}
 \end{frame}
 
-\begin{frame}[allowframebreaks]
+\begin{frame}
 	\frametitle{Adams-Bashforth Method}
-	%insert euler1.pgf
-The Adams-Bashforth method is based on the idea of using multistep method to approximate the solution.
-	\begin{block}{Algorithm}
-		define IVP $f(t,y)$: $t = t_0$ and $y = y_0$ \\
-		input step size $h$ \\number of steps $n$ \\
-		for j from $1$ to $n$ do\\
-		$y = y + h \cdot \frac{55f_n-59f_{n-1}+37f_{n-2}-9f_{n-3}}{24}$\\ $
-		t=t+h$
-		\end{block}
 	\begin{figure}
 		\centering
 		\scalebox{0.45}{\input{abm.pgf}}
 		\caption{Adams-Bashforth Method for IVP1(left), IVP2(right)}
+	\end{figure}
+\end{frame}
+\begin{frame}
+	\frametitle{Power Series Method}
+	\begin{figure}
+		\centering
+		\scalebox{0.45}{\input{power.pgf}}
+		\caption{Power Series Method for IVP1(left), IVP2(right)}
+	\end{figure}
+\end{frame}
+\begin{frame}[allowframebreaks]
+	\frametitle{IVP1 and IVP2}
+	\begin{figure}
+		\centering
+		\scalebox{0.45}{\input{overall.pgf}}
+		\caption{Power Series Method for IVP1(left), IVP2(right)}
 	\end{figure}
 \end{frame}
 \end{document}

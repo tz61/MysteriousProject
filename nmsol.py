@@ -23,6 +23,7 @@ Iter_Method=['Euler Method','Improved Euler Method','Runge-Kutta 4th Order Metho
 IVP=[[IVP1func,IVP1_t0,IVP1_y0],[IVP2func,IVP2_t0,IVP2_y0]]
 class NumericalSols:
     def __init__(self, IVPQuestion, step, lower_bound, upper_bound, method_num, overflow_cap=50):
+        self.IVPQuestion = IVPQuestion
         self.t_0 = IVP[IVPQuestion][1]
         self.y_0 = IVP[IVPQuestion][2]
         self.IVP_func = IVP[IVPQuestion][0]
@@ -296,25 +297,42 @@ class NumericalSols:
         b = np.zeros(10000, dtype=float)
         c = np.zeros(10000, dtype=float)
         
-        n_pwr = 10
         # manully calculate
-        a[0] = self.y_0
-        self.help_bc(a, b, c, 0)
-        a[1] = c[0]
-        self.help_bc(a, b, c, 1)
-        a[2] = (c[1]-a[0])/2
-        self.help_bc(a, b, c, 2)
-        a[3] = (c[2]-b[0]-a[1])/3 
-        self.help_bc(a, b, c, 3)
-        a[4] = (c[3]-b[1]-a[2]+1)/4 
+        # for IVP2
+        a_settings = [[self.y_0],[self.y_0, 1, 1.5, 2.16667, 3.625, 5.375, 8.1875]]
+        
+        if (self.IVPQuestion == 0):
+            n_pwr = 100
+            d = [self.t_0**2, 2 * self.t_0, 1]
+            a[0] = self.y_0
+            for n in range(n_pwr - 1):
+                s = 0
+                for k in range(n + 1):
+                    s += a[k] * a[n - k]
+        
+                if (n < len(d)): 
+                    s -= d[n]
+                a[n + 1] = s / (n + 1)
+        else:
+            n_pwr = len(a_settings[self.IVPQuestion])
+            a = a_settings[self.IVPQuestion]
+        print(a)
+        # self.help_bc(a, b, c, 0)
+        # a[1] = c[0]
+        # self.help_bc(a, b, c, 1)
+        # a[2] = (c[1]-a[0])/2
+        # self.help_bc(a, b, c, 2)
+        # a[3] = (c[2]-b[0]-a[1])/3 
+        # self.help_bc(a, b, c, 3)
+        # a[4] = (c[3]-b[1]-a[2]+1)/4 
 
-        for i in range(4,n_pwr):
-            self.help_bc(a, b, c, i)
-            a[i+1] = (c[i]-b[i-2]-a[i-1])/(i+1)
+        # for i in range(4,n_pwr):
+        #     self.help_bc(a, b, c, i)
+        #     a[i+1] = (c[i]-b[i-2]-a[i-1])/(i+1)
 
-        for i in range(n_pwr):    
-            print(i, "a=", a[i], "b=", b[i], "c=", c[i])
-        self.help_radius(a, n_pwr)
+        # for i in range(n_pwr):    
+        #     print(i, "a=", a[i], "b=", b[i], "c=", c[i])
+        # self.help_radius(a, n_pwr)
 
         self.help_PwrSrs(a, b, c, -1, n_pwr)
         self.help_PwrSrs(a, b, c, 1, n_pwr)
@@ -344,7 +362,7 @@ class NumericalSols:
             y_n = 0
             for i in range(n):
                 y_n += a[i] * (t_n ** i)
-            if(abs(y_n)>50): break
+            if(abs(y_n)>self.y_overflow_cap): break
 
             t_n = t_n + dir* self.step
 
@@ -368,37 +386,20 @@ class NumericalSols:
             plt.plot(self.t_all, self.y_all, c="blue", label="MS")
         if (n==5):
             plt.plot(self.t_all, self.y_all, c="green", label="Hamming")
-def testDiffMethods(IVPQuestion, step, lower_bound, upper_bound):
+def testDiffMethods(IVPQuestion, step, lower_bound, upper_bound, y_capping):
     """
     Test different methods according to the given parameters by drawing plots.
     """
     # eulerMethod
-    euler_meth = NumericalSols(IVPQuestion, step, lower_bound, upper_bound, 0)
+    euler_meth = NumericalSols(IVPQuestion, step, lower_bound, upper_bound, 0,y_capping)
     plt.plot(euler_meth.t_all, euler_meth.y_all, c="green", label="Euler method")
-    
-    # impEuler
-    im_eu_meth = NumericalSols(IVPQuestion, step, lower_bound, upper_bound, 1)
+    im_eu_meth = NumericalSols(IVPQuestion, step, lower_bound, upper_bound, 1,y_capping)
     plt.plot(im_eu_meth.t_all, im_eu_meth.y_all, c="red", label="Improve Euler method")
-    
-    # runge4thMethod
-    runge_meth = NumericalSols(IVPQuestion, step, lower_bound, upper_bound, 2)
+    runge_meth = NumericalSols(IVPQuestion, step, lower_bound, upper_bound, 2,y_capping)
     plt.plot(runge_meth.t_all, runge_meth.y_all, c="blue", label="Runge 4th order")
-    
-    # ABM
-    mulstep_meth = NumericalSols(IVPQuestion, step, lower_bound, upper_bound, 3)
-    plt.plot(mulstep_meth.t_all, mulstep_meth.y_all, c="brown", label="ABM")
-    
-    # MS
-    mulstep_meth = NumericalSols(IVPQuestion, step, lower_bound, upper_bound, 4)
-    plt.plot(mulstep_meth.t_all, mulstep_meth.y_all, c="black", label="MS")
-
-    # Hamming
-    mulstep_meth = NumericalSols(IVPQuestion, step, lower_bound, upper_bound, 5)
-    plt.plot(mulstep_meth.t_all, mulstep_meth.y_all, c="purple", label="Hamming")
-
-    
-    # powerSeries method
-    power_meth = NumericalSols(IVPQuestion, step, lower_bound, upper_bound, 6)
+    mulstep_meth = NumericalSols(IVPQuestion, step, lower_bound, upper_bound, 3,y_capping)
+    plt.plot(mulstep_meth.t_all, mulstep_meth.y_all, c="brown", label="Adams-Bashforth")
+    power_meth = NumericalSols(IVPQuestion, step, lower_bound, upper_bound, 6,y_capping)
     plt.plot(power_meth.t_all, power_meth.y_all, c="orange", label="Power series")
 def testDiffSteps(IVPQuestion, lower_bound, upper_bound, method_num):
     """
@@ -415,17 +416,15 @@ def testDiffSteps(IVPQuestion, lower_bound, upper_bound, method_num):
     # step == 0.05
     meth3 = NumericalSols(IVPQuestion, 0.05, lower_bound, upper_bound, method_num)
     plt.plot(meth3.t_all, meth3.y_all, c="blue", label="step=0.05")
-def plotDiffMethods(IVPQuestion, step, lower_bound, upper_bound):
+def plotDiffMethods(IVPQuestion, step, lower_bound, upper_bound, y_capping):
     # fig=plt.figure(num=1,figsize=(8,6))
     plt.xlabel('t', fontsize=19)
     plt.ylabel('y', fontsize=19)
-
     # ax1 = fig.add_subplot(311)
     # ax1.set_title("311")
-    testDiffMethods(IVPQuestion, step, lower_bound, upper_bound)
-
+    testDiffMethods(IVPQuestion, step, lower_bound, upper_bound, y_capping)
     plt.legend()
-    plt.show()
+
 def plotDiffSteps(IVPQuestion, lower_bound, upper_bound, method_num):
     plt.xlabel('t', fontsize=19)
     plt.ylabel('y', fontsize=19)

@@ -3,9 +3,9 @@ from matplotlib import pyplot as plt
 import numpy as np
 from nmsol import *
 #general settings
-y_capping = 2000
-t_left=-5
-t_right=1
+y_capping = 30
+t_left=-1.2
+t_right=1.2
 stepsize = 0.01
 # Euler
 euler_1 = NumericalSols(IVP1, stepsize, t_left, t_right, EULER_METHOD,y_capping)
@@ -50,4 +50,29 @@ abm2 = NumericalSols(IVP2, stepsize, t_left, t_right, ABM_METHOD,100)
 abm2.draw("blue","IVP2")
 plt.legend()
 plt.savefig('abm.pgf')
+plt.cla()
+# Power Series
+power1 = NumericalSols(IVP1, stepsize, t_left, t_right, POWER_SERIES_METHOD,100)
+power1.draw("red","IVP1")
+plt.legend()
+# plt.savefig('power1.pgf')
+# plt.cla()
+power2 = NumericalSols(IVP2, stepsize, t_left, t_right, POWER_SERIES_METHOD,100)
+power2.draw("blue","IVP2")
+plt.legend()
+plt.savefig('power.pgf')
+plt.show()
+plt.cla()
+
+# overall IVP1
+plotDiffMethods(IVP1, stepsize, t_left, t_right, y_capping)
+plt.title("Overall IVP1")
+plt.savefig('overallIVP1.pgf')
+plt.show()
+plt.cla()
+# overall IVP2
+plotDiffMethods(IVP2, stepsize, t_left, t_right, y_capping)
+plt.title("Overall IVP2")
+plt.savefig('overallIVP2.pgf')
+plt.show()
 plt.cla()
