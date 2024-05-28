@@ -354,10 +354,10 @@ class NumericalSols:
             pass
 
     # Draw
-    def draw(self):
+    def draw(self,color_="red",label_=""):
         plt.xlabel('t', fontsize=19)
         plt.ylabel('y', fontsize=19)
-        plt.plot(self.t_all, self.y_all, c="red")
+        plt.plot(self.t_all, self.y_all, c=color_, label=label_)
 
     def drawlinear(self,n):
         plt.xlabel('t', fontsize=19)
